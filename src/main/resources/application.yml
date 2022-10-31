@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: admin
+
+    jpa:
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate:
+        ddl-auto: create-drop
+      open-in-view: off
+
+      logging:
+        level:
+          org.hibernate:
+            SQL: DEBUG
+            type: TRACE
+
+      allowed-origins: "*"
