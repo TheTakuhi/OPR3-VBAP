@@ -1,4 +1,4 @@
-package osu.damek.usedcars.service;
+package osu.damek.usedcars.serviceImp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,19 +7,17 @@ import osu.damek.usedcars.model.Car;
 import osu.damek.usedcars.repository.CarRepository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
-public class CarService {
+public class CarServiceImp {
     private final CarRepository carRepository;
 
     @Autowired
-    public CarService(CarRepository carRepository) {
+    public CarServiceImp(CarRepository carRepository) {
         this.carRepository = carRepository;
     }
 
     public Car addCar(Car car){
-        car.setBrand("BMW");
         return carRepository.save(car);
     }
 

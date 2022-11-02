@@ -4,16 +4,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import osu.damek.usedcars.model.Car;
-import osu.damek.usedcars.service.CarService;
+import osu.damek.usedcars.serviceImp.CarServiceImp;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/cars")
 public class CarController {
-    private final CarService carService;
+    private final CarServiceImp carService;
 
-    public CarController(CarService carService) {
+    public CarController(CarServiceImp carService) {
         this.carService = carService;
     }
 
