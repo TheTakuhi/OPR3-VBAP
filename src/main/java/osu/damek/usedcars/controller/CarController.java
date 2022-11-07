@@ -8,8 +8,8 @@ import osu.damek.usedcars.serviceImp.CarServiceImp;
 
 import java.util.List;
 
-@RestController
 @CrossOrigin
+@RestController
 @RequestMapping("/cars")
 public class CarController {
     private final CarServiceImp carService;

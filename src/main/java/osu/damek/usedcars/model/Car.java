@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @ToString
 @Entity
-@Table(name = "car")
+@Table(name = "cars")
 public class Car implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

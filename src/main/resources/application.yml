@@ -1,21 +1,21 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/opr_vbap
     username: postgres
     password: admin
 
-    jpa:
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    properties:
       hibernate:
-        ddl-auto: create-drop
-      open-in-view: off
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: off
 
-      logging:
-        level:
-          org.hibernate:
-            SQL: DEBUG
-            type: TRACE
+  logging:
+    level:
+      org.hibernate:
+        SQL: DEBUG
+        type: TRACE
 
-      allowed-origins: "*"
+allowed-origins: "*"
