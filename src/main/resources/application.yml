@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/opr_vbap
+    url: jdbc:postgresql://localhost:5432/project2022
     username: postgres
     password: admin
 
@@ -11,11 +11,3 @@ spring:
     hibernate:
       ddl-auto: create-drop
     open-in-view: off
-
-  logging:
-    level:
-      org.hibernate:
-        SQL: DEBUG
-        type: TRACE
-
-allowed-origins: "*"
