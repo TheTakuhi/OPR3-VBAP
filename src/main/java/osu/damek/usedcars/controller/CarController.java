@@ -2,6 +2,7 @@ package osu.damek.usedcars.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import osu.damek.usedcars.model.Car;
 import osu.damek.usedcars.serviceImp.CarServiceImp;
@@ -42,6 +43,7 @@ public class CarController {
         return new ResponseEntity<>(updateCar, HttpStatus.OK);
     }
 
+    @Transactional
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCar(@PathVariable("id") Long id){
         carService.deleteCar(id);
