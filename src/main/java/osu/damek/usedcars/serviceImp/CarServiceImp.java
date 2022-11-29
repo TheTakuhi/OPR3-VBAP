@@ -2,7 +2,7 @@ package osu.damek.usedcars.serviceImp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import osu.damek.usedcars.exception.CarNotFoundException;
+import osu.damek.usedcars.exception.NotFoundException;
 import osu.damek.usedcars.model.Car;
 import osu.damek.usedcars.repository.CarRepository;
 
@@ -30,7 +30,7 @@ public class CarServiceImp {
     }
 
     public Car findCarById(Long id){
-        return carRepository.findCarById(id).orElseThrow(() -> new CarNotFoundException("Car with id: " + id + " was not found"));
+        return carRepository.findCarById(id).orElseThrow(() -> new NotFoundException("Car with id: " + id + " was not found"));
     }
 
     public void deleteCar(Long id){
