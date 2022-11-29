@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,5 +21,22 @@ public class Tag {
     private Long id;
     @Column(name = "text", nullable = false)
     private String text;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "id_user",
+            foreignKey = @ForeignKey(
+                    name = "user_tag_fk"
+            )
+    )
+    private User user;
+    @ManyToMany(
+            mappedBy = "tags",
+            fetch = FetchType.LAZY
+    )
+    private List<Car> cars;
+    @ManyToMany(
+            mappedBy = "tags",
+            fetch = FetchType.LAZY
+    )
+    private List<Motorcycle> motorcycles;
 }
