@@ -31,6 +31,12 @@ public class MotorcycleController {
         return new ResponseEntity<>(motorcycle, HttpStatus.OK);
     }
 
+    @GetMapping("/tags/{id}")
+    public ResponseEntity<List<Motorcycle>> getAllByTagId(@PathVariable Long tagId){
+        List<Motorcycle> motorcycles = motorcycleService.getAllByTagId(tagId);
+        return new ResponseEntity<>(motorcycles, HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Motorcycle> addMotorcycle(@RequestBody Motorcycle motorcycle){
         Motorcycle newMotorcycle = motorcycleService.addMotorcycle(motorcycle);

@@ -25,6 +25,8 @@ public class MotorcycleServiceImp {
         return motorcycleRepository.findAll();
     }
 
+    public List<Motorcycle> getAllByTagId(Long tagId) { return motorcycleRepository.findAllByTagsId(tagId);}
+
     public Motorcycle updateMotorcycle(Motorcycle motorcycle){
         return motorcycleRepository.save(motorcycle);
     }

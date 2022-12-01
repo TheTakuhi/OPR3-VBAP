@@ -71,4 +71,8 @@ public class User {
         this.password = password;
         this.roleU = roleU;
     }
+
+    public void setRole(Role role) {
+        this.roleU = role == null ? Role.USER : role;
+    }
 }

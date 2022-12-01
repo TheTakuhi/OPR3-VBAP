@@ -31,6 +31,12 @@ public class CarController {
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
+    @GetMapping("/tags/{id}")
+    public ResponseEntity<List<Car>> getAllByTagId(@PathVariable Long tagId){
+        List<Car> cars = carService.getAllByTagId(tagId);
+        return new ResponseEntity<>(cars, HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Car> addCar(@RequestBody Car car){
         Car newCar = carService.addCar(car);
