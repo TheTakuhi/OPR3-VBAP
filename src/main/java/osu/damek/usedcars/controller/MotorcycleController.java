@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import osu.damek.usedcars.model.Motorcycle;
-import osu.damek.usedcars.serviceImp.MotorcycleServiceImp;
+import osu.damek.usedcars.service.MotorcycleService;
 
 import java.util.List;
 
@@ -13,21 +13,21 @@ import java.util.List;
 @RestController
 @RequestMapping("/motorcycles")
 public class MotorcycleController {
-    private final MotorcycleServiceImp motorcycleService;
+    private final MotorcycleService motorcycleService;
 
-    public MotorcycleController(MotorcycleServiceImp motorcycleService) {
+    public MotorcycleController(MotorcycleService motorcycleService) {
         this.motorcycleService = motorcycleService;
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<Motorcycle>> getAllMotorcycles(){
-        List<Motorcycle> motorcycles = motorcycleService.findAllMotorcycles();
+        List<Motorcycle> motorcycles = motorcycleService.getAllMotorcycles();
         return new ResponseEntity<>(motorcycles, HttpStatus.OK);
     }
 
     @GetMapping("/find/{id}")
     public ResponseEntity<Motorcycle> getMotorcycleById(@PathVariable("id") Long id){
-        Motorcycle motorcycle = motorcycleService.findMotorcycleById(id);
+        Motorcycle motorcycle = motorcycleService.getMotorcycleById(id);
         return new ResponseEntity<>(motorcycle, HttpStatus.OK);
     }
 

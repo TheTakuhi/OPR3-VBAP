@@ -5,11 +5,12 @@ import org.springframework.stereotype.Service;
 import osu.damek.usedcars.exception.NotFoundException;
 import osu.damek.usedcars.model.Motorcycle;
 import osu.damek.usedcars.repository.MotorcycleRepository;
+import osu.damek.usedcars.service.MotorcycleService;
 
 import java.util.List;
 
 @Service
-public class MotorcycleServiceImp {
+public class MotorcycleServiceImp implements MotorcycleService {
     private final MotorcycleRepository motorcycleRepository;
 
     @Autowired
@@ -17,22 +18,22 @@ public class MotorcycleServiceImp {
         this.motorcycleRepository = motorcycleRepository;
     }
 
+    public List<Motorcycle> getAllMotorcycles(){
+        return motorcycleRepository.findAll();
+    }
+
+    public List<Motorcycle> getAllByTagId(Long tagId) { return motorcycleRepository.getAllByTagsId(tagId);}
+
+    public Motorcycle getMotorcycleById(Long id){
+        return motorcycleRepository.getMotorcycleById(id).orElseThrow(() -> new NotFoundException("Motorcycle with id: " + id + " was not found"));
+    }
+
     public Motorcycle addMotorcycle(Motorcycle motorcycle){
         return motorcycleRepository.save(motorcycle);
     }
 
-    public List<Motorcycle> findAllMotorcycles(){
-        return motorcycleRepository.findAll();
-    }
-
-    public List<Motorcycle> getAllByTagId(Long tagId) { return motorcycleRepository.findAllByTagsId(tagId);}
-
     public Motorcycle updateMotorcycle(Motorcycle motorcycle){
         return motorcycleRepository.save(motorcycle);
-    }
-
-    public Motorcycle findMotorcycleById(Long id){
-        return motorcycleRepository.findMotorcycleById(id).orElseThrow(() -> new NotFoundException("Motorcycle with id: " + id + " was not found"));
     }
 
     public void deleteMotorcycle(Long id){

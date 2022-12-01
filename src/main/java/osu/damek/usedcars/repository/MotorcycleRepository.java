@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface MotorcycleRepository extends JpaRepository<Motorcycle, Long> {
     void deleteMotorcycleById(Long id);
-    Optional<Motorcycle> findMotorcycleById(Long id);
-    List<Motorcycle> findAllByTagsId(Long tagId);
-    List<Motorcycle> findAllByUserId(Long userId);
+    Optional<Motorcycle> getMotorcycleById(Long id);
+    List<Motorcycle> getAllByTagsId(Long tagId);
+    List<Motorcycle> getAllByUserId(Long userId);
 }
