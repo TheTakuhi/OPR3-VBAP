@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -47,4 +48,27 @@ public class User {
             cascade = CascadeType.REMOVE
     )
     private List<Motorcycle> motorcycles;
+
+    public User(String username, String password, Role roleU) {
+        this.username = username;
+        this.password = password;
+        this.roleU = roleU;
+        this.tags = new ArrayList<>();
+        this.cars = new ArrayList<>();
+        this.motorcycles = new ArrayList<>();
+    }
+
+    public User(Long id, String username, String password){
+        setId(id);
+        this.username = username;
+        this.password = password;
+        this.roleU = Role.USER;
+    }
+
+    public User(Long id, String username, String password, Role roleU){
+        setId(id);
+        this.username = username;
+        this.password = password;
+        this.roleU = roleU;
+    }
 }
