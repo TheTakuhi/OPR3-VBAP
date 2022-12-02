@@ -67,4 +67,12 @@ public class Tag {
         this.text = text;
         this.user = user;
     }
+
+    public void removeCar(Car car) {
+        cars.removeIf(n -> n.getId().equals(car.getId()));
+    }
+
+    public void removeMotorcycle(Motorcycle motorcycle) {
+        motorcycles.removeIf(n -> n.getId().equals(motorcycle.getId()));
+    }
 }
