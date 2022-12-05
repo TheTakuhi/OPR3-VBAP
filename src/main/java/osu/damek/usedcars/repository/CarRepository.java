@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface CarRepository extends JpaRepository<Car, Long> {
     void deleteCarById(Long id);
     Optional<Car> getCarById(Long id);
+
     List<Car> getAllByTagsId(Long tagId);
     List<Car> getAllByUserId(Long userId);
 }

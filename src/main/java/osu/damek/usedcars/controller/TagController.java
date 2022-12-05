@@ -55,9 +55,4 @@ public class TagController {
         tagService.deleteTag(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @DeleteMapping("/{userId}")
-    public void deleteByUserId(@PathVariable Long userId) {
-        tagService.deleteByUserId(userId);
-    }
 }

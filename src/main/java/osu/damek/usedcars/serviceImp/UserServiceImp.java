@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import osu.damek.usedcars.exception.NotFoundException;
-import osu.damek.usedcars.exception.NotOwnerException;
 import osu.damek.usedcars.model.Role;
 import osu.damek.usedcars.model.User;
 import osu.damek.usedcars.repository.UserRepository;

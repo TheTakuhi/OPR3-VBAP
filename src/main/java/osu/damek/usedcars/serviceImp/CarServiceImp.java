@@ -3,13 +3,10 @@ package osu.damek.usedcars.serviceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import osu.damek.usedcars.exception.NotFoundException;
-import osu.damek.usedcars.exception.NotOwnerException;
 import osu.damek.usedcars.model.Car;
-import osu.damek.usedcars.model.User;
 import osu.damek.usedcars.repository.CarRepository;
 import osu.damek.usedcars.service.CarService;
 import osu.damek.usedcars.service.TagService;
-import osu.damek.usedcars.service.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,29 +15,27 @@ import java.util.stream.Collectors;
 public class CarServiceImp implements CarService {
     private final CarRepository carRepository;
     private final TagService tagService;
-    private final UserService userService;
 
     @Autowired
-    public CarServiceImp(CarRepository carRepository, TagService tagService, UserService userService) {
+    public CarServiceImp(CarRepository carRepository, TagService tagService) {
         this.carRepository = carRepository;
         this.tagService = tagService;
-        this.userService = userService;
     }
 
     public List<Car> getAllCars(){
-//        return carRepository.findAll();
-        User currentUser = userService.getCurrentUser();
-        return carRepository.getAllByUserId(currentUser.getId());
+        return carRepository.findAll();
+//        User currentUser = userService.getCurrentUser();
+//        return carRepository.getAllByUserId(currentUser.getId());
     }
 
     public List<Car> getAllByTagId(Long tagId) {
-        User currentUser = userService.getCurrentUser();
-        return tagService.getTagById(tagId)
-                .getCars()
-                .stream()
-                .filter(note -> note.getUser().getId().equals(currentUser.getId()))
-                .collect(Collectors.toList());
-//        return carRepository.getAllByTagsId(tagId);
+//        User currentUser = userService.getCurrentUser();
+//        return tagService.getTagById(tagId)
+//                .getCars()
+//                .stream()
+//                .filter(note -> note.getUser().getId().equals(currentUser.getId()))
+//                .collect(Collectors.toList());
+        return carRepository.getAllByTagsId(tagId);
     }
 
     public Car getCarById(Long id){
@@ -48,7 +43,7 @@ public class CarServiceImp implements CarService {
     }
 
     public Car addCar(Car car){
-        checkIfOwnedByLoggedUser(car);
+//        checkIfOwnedByLoggedUser(car);
         car.setUser(car.getUser());
         car.setTags(
                 car.getTags()
@@ -66,7 +61,7 @@ public class CarServiceImp implements CarService {
 
     public void deleteCar(Long id){
         Car car = getCarById(id);
-        checkIfOwnedByLoggedUser(car);
+//        checkIfOwnedByLoggedUser(car);
 
         car.getTags().forEach(tag -> tag.removeCar(car));
 
@@ -74,11 +69,11 @@ public class CarServiceImp implements CarService {
         tagService.removeUnused();
     }
 
-    private void checkIfOwnedByLoggedUser(Car car) {
-        User currentUser = userService.getCurrentUser();
-        if (!car.getUser().getId().equals(currentUser.getId()))
-            throw new NotOwnerException(
-                    String.format("User %s does not own car with id %d",
-                            currentUser.getUsername(), car.getId()));
-    }
+//    private void checkIfOwnedByLoggedUser(Car car) {
+//        User currentUser = userService.getCurrentUser();
+//        if (!car.getUser().getId().equals(currentUser.getId()))
+//            throw new NotOwnerException(
+//                    String.format("User %s does not own car with id %d",
+//                            currentUser.getUsername(), car.getId()));
+//    }
 }

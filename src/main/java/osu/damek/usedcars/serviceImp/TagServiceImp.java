@@ -32,10 +32,12 @@ public class TagServiceImp implements TagService {
     }
 
     public Tag addTag(Tag tag){
+        tag.setUser(tag.getUser());
         return tagRepository.save(tag);
     }
 
     public Tag updateTag(Tag tag){
+        tag.setText(tag.getText());
         return tagRepository.save(tag);
     }
 
