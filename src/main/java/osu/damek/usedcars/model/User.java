@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -14,19 +17,23 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "user")
-@Table(name = "users")
-public class User {
+@Table(
+        name = "\"users\"",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "user_username_unique",
+                        columnNames = "username"
+                )
+        })
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Long id;
     @Column(name = "username", nullable = false, unique = true)
     private String username;
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private Role roleU;
     @OneToMany(
             mappedBy = "user",
             orphanRemoval = true,
@@ -49,30 +56,64 @@ public class User {
     )
     private List<Motorcycle> motorcycles;
 
-    public User(String username, String password, Role roleU) {
+    @Column(
+            name = "account_non_expired",
+            nullable = false
+    )
+    private boolean isAccountNonExpired;
+
+    @Column(
+            name = "non_locked",
+            nullable = false
+    )
+    private boolean isAccountNonLocked;
+
+    @Column(
+            name = "credentials_non_expired",
+            nullable = false
+    )
+    private boolean isCredentialsNonExpired;
+
+    @Column(
+            name = "enabled",
+            nullable = false
+    )
+    private boolean isEnabled;
+
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.roleU = roleU;
         this.tags = new ArrayList<>();
         this.cars = new ArrayList<>();
         this.motorcycles = new ArrayList<>();
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isCredentialsNonExpired = true;
+        this.isEnabled = true;
     }
 
-    public User(Long id, String username, String password){
-        setId(id);
-        this.username = username;
-        this.password = password;
-        this.roleU = Role.USER;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new ArrayList<>();
     }
 
-    public User(Long id, String username, String password, Role roleU){
-        setId(id);
-        this.username = username;
-        this.password = password;
-        this.roleU = roleU;
+    @Override
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired;
     }
 
-    public void setRole(Role role) {
-        this.roleU = role == null ? Role.USER : role;
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isCredentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
     }
 }

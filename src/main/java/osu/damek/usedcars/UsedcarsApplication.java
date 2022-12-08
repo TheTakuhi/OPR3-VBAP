@@ -50,26 +50,26 @@ public class UsedcarsApplication {
 	) {
 		return args -> {
 			List<User> users = List.of(
-					new User("admin", "admin", Role.ADMIN),
-					new User("user", "user", Role.USER)
+					new User("admin", "admin")
 			);
-			loggerS.info("2 users were created");
+
+			loggerS.info("1 user was created");
 
 			List<Tag> tags = List.of(
 					new Tag("tagA", users.get(0), new ArrayList<>(), new ArrayList<>()),
-					new Tag("tagU", users.get(1), new ArrayList<>(), new ArrayList<>())
+					new Tag("tagU", users.get(0), new ArrayList<>(), new ArrayList<>())
 			);
 			loggerS.info("2 tags were created");
 
 			List<Car> cars = List.of(
 					new Car("car-brand1", "car-type1", 100D, "car-image1", "no fuel", users.get(0), List.of(tags.get(0))),
-					new Car("car-brand2", "car-type2", 200D, "car-image2", "no wheels", users.get(1), List.of(tags.get(1)))
+					new Car("car-brand2", "car-type2", 200D, "car-image2", "no wheels", users.get(0), List.of(tags.get(1)))
 			);
 			loggerS.info("2 cars were created");
 
 			List<Motorcycle> motorcycles = List.of(
 					new Motorcycle("moto-brand1", "moto-type1", 100D, "moto-image1", "no fuel", users.get(0), List.of(tags.get(0))),
-					new Motorcycle("moto-brand2", "moto-type2", 200D, "moto-image2", "no mirrors", users.get(1), List.of(tags.get(1)))
+					new Motorcycle("moto-brand2", "moto-type2", 200D, "moto-image2", "no mirrors", users.get(0), List.of(tags.get(1)))
 			);
 			loggerS.info("2 motorcycles were created");
 
