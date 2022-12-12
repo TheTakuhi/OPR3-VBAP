@@ -11,3 +11,9 @@ spring:
     hibernate:
       ddl-auto: create-drop
     open-in-view: off
+
+application:
+  jwt:
+    secret-key: superdupersecuredkeyforthisapplication
+    token-prefix: "Bearer "
+    token-expiration-after-days: 10
