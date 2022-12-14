@@ -83,14 +83,13 @@ public class User implements UserDetails {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.tags = new ArrayList<>();
-        this.cars = new ArrayList<>();
-        this.motorcycles = new ArrayList<>();
         this.isAccountNonExpired = true;
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
         this.isEnabled = true;
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

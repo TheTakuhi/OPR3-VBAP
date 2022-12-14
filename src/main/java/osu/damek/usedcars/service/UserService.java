@@ -2,7 +2,6 @@ package osu.damek.usedcars.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import osu.damek.usedcars.model.Role;
 import osu.damek.usedcars.model.User;
 
 import java.util.List;
