@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,14 +32,14 @@ public class Tag {
             )
     )
     private User user;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(
-            mappedBy = "tags",
-            fetch = FetchType.LAZY
+            mappedBy = "tags"
     )
     private List<Car> cars;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(
-            mappedBy = "tags",
-            fetch = FetchType.LAZY
+            mappedBy = "tags"
     )
     private List<Motorcycle> motorcycles;
 

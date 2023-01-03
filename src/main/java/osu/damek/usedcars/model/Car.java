@@ -45,7 +45,7 @@ public class Car implements Serializable {
 //    @Enumerated(EnumType.STRING)
 //    @Column(name = "fuel_car", nullable = false)
 //    private Fuel fuel;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tag_car",
             joinColumns = @JoinColumn(name = "id_car"),

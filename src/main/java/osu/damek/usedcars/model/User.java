@@ -87,9 +87,10 @@ public class User implements UserDetails {
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
         this.isEnabled = true;
+        this.tags = new ArrayList<>();
+        this.cars = new ArrayList<>();
+        this.motorcycles = new ArrayList<>();
     }
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

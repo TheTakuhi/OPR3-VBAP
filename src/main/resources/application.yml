@@ -16,4 +16,4 @@ application:
   jwt:
     secret-key: MyVeryStrongPasswordIsLikePavelSmolkaAgaintsBzumBzumVodnikWhenTheyFightAgaintsEachOtherInTheBattleOfEpicRoutersAndSmolkaWINS
     token-prefix: "Bearer "
-    token-expiration-after-days: 10
+    token-expiration-after-days: 1
