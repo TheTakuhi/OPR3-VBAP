@@ -45,12 +45,12 @@ public class CarServiceImp implements CarService {
 
     public Car addCar(Car car){
         car.setUser(car.getUser());
-        car.setTags(
-                car.getTags()
-                        .stream()
-                        .map(tag -> tagService.getTagById(tag.getId()))
-                        .collect(Collectors.toSet())
-        );
+//        car.setTags(
+//                car.getTags()
+//                        .stream()
+//                        .map(tag -> tagService.getTagById(tag.getId()))
+//                        .collect(Collectors.toSet())
+//        );
         return carRepository.save(car);
     }
 

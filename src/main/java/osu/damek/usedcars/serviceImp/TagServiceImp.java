@@ -15,10 +15,12 @@ import java.util.List;
 @Service
 public class TagServiceImp implements TagService {
     private final TagRepository tagRepository;
+    private final UserService userService;
 
     @Autowired
-    public TagServiceImp(TagRepository tagRepository) {
+    public TagServiceImp(TagRepository tagRepository, UserService userService) {
         this.tagRepository = tagRepository;
+        this.userService = userService;
     }
 
     public List<Tag> getAllTags(){
@@ -34,6 +36,9 @@ public class TagServiceImp implements TagService {
     }
 
     public Tag addTag(Tag tag){
+        User currentUser = userService.getCurrentUser();
+        tag.setUser(currentUser);
+        currentUser.getTags().add(tag);
         tag.setUser(tag.getUser());
         return tagRepository.save(tag);
     }

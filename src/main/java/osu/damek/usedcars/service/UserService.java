@@ -12,4 +12,6 @@ public interface UserService extends UserDetailsService {
     User createUser(User user);
     User getUserById(Long userId);
     User getLoggedUser();
+
+    User getCurrentUser();
 }
