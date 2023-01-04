@@ -47,14 +47,4 @@ public class UserServiceImp implements UserService, UserDetailsService {
         String username = (String) auth.getPrincipal();
         return (User) loadUserByUsername(username);
     }
-
-    public User getCurrentUser() {
-        String username = getLoggedUser().getUsername();
-
-        return userRepository.findUserByUsername(username)
-                .orElseThrow(() -> {
-                    String message = String.format("Invalid user authenticated. User with username \"%s\" doesn't exists.", username);
-                    throw new IllegalStateException(message);
-                });
-    }
 }

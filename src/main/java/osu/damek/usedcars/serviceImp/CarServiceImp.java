@@ -9,6 +9,7 @@ import osu.damek.usedcars.service.CarService;
 import osu.damek.usedcars.service.TagService;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,13 +44,12 @@ public class CarServiceImp implements CarService {
     }
 
     public Car addCar(Car car){
-//        checkIfOwnedByLoggedUser(car);
         car.setUser(car.getUser());
         car.setTags(
                 car.getTags()
                         .stream()
                         .map(tag -> tagService.getTagById(tag.getId()))
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toSet())
         );
         return carRepository.save(car);
     }
@@ -61,19 +61,10 @@ public class CarServiceImp implements CarService {
 
     public void deleteCar(Long id){
         Car car = getCarById(id);
-//        checkIfOwnedByLoggedUser(car);
 
         car.getTags().forEach(tag -> tag.removeCar(car));
 
         carRepository.deleteCarById(id);
         tagService.removeUnused();
     }
-
-//    private void checkIfOwnedByLoggedUser(Car car) {
-//        User currentUser = userService.getCurrentUser();
-//        if (!car.getUser().getId().equals(currentUser.getId()))
-//            throw new NotOwnerException(
-//                    String.format("User %s does not own car with id %d",
-//                            currentUser.getUsername(), car.getId()));
-//    }
 }

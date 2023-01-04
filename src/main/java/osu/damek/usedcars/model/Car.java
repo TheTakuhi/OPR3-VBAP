@@ -1,12 +1,15 @@
 package osu.damek.usedcars.model;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -45,38 +48,22 @@ public class Car implements Serializable {
 //    @Enumerated(EnumType.STRING)
 //    @Column(name = "fuel_car", nullable = false)
 //    private Fuel fuel;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "tag_car",
             joinColumns = @JoinColumn(name = "id_car"),
             inverseJoinColumns = @JoinColumn(name = "id_tag")
     )
-    private List<Tag> tags;
-    @ManyToOne
+    private Set<Tag> tags;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "id_user",
-            nullable = false,
             foreignKey = @ForeignKey(
                     name = "user_car_fk"
             )
     )
     private User user;
-
-    public Car(String brand, String type, Double price, String imageUrl, String description, User user, List<Tag> tags) {
-        this.brand = brand;
-        this.type = type;
-        this.price = price;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.user = user;
-        this.tags = tags;
-    }
-
-    public Car(String brand, User user){
-        this.brand = brand;
-        this.user = user;
-        this.tags = new ArrayList<>();
-    }
 
     public void removeTag(Tag tag) {
         tags.remove(tag);

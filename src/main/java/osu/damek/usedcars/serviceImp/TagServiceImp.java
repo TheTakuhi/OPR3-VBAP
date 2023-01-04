@@ -15,12 +15,10 @@ import java.util.List;
 @Service
 public class TagServiceImp implements TagService {
     private final TagRepository tagRepository;
-    private final UserService userService;
 
     @Autowired
-    public TagServiceImp(TagRepository tagRepository, UserService userService) {
+    public TagServiceImp(TagRepository tagRepository) {
         this.tagRepository = tagRepository;
-        this.userService = userService;
     }
 
     public List<Tag> getAllTags(){
@@ -36,9 +34,6 @@ public class TagServiceImp implements TagService {
     }
 
     public Tag addTag(Tag tag){
-//        User currentUser = userService.getCurrentUser();
-//        tag.setUser(currentUser);
-//        currentUser.getTags().add(tag);
         tag.setUser(tag.getUser());
         return tagRepository.save(tag);
     }
@@ -63,11 +58,5 @@ public class TagServiceImp implements TagService {
     @Transactional
     public void removeUnused() {
         tagRepository.removeAllUnused();
-        /*
-        getAllByUserId(userService.getCurrentUser().getId())
-                .stream()
-                .filter(tag -> tag.getNotes().isEmpty() && tag.getNoteGroups().isEmpty())
-                .forEach(tagRepository::delete);
-        */
     }
 }

@@ -1,5 +1,6 @@
 package osu.damek.usedcars.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,39 +38,12 @@ public class Tag {
     @ManyToMany(
             mappedBy = "tags"
     )
-    private List<Car> cars;
+    private Set<Car> cars;
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(
             mappedBy = "tags"
     )
-    private List<Motorcycle> motorcycles;
-
-    public Tag(String text, User user, List<Car> cars, List<Motorcycle> motorcycles) {
-        this.text = text;
-        this.user = user;
-        this.cars = cars;
-        this.motorcycles = motorcycles;
-    }
-
-    public Tag(Long id, String text, User user, List<Car> cars) {
-        this.id = id;
-        this.text = text;
-        this.user = user;
-        this.cars = cars;
-    }
-
-    public Tag(String text, User user) {
-        this.text = text;
-        this.user = user;
-        this.cars = new ArrayList<>();
-        this.motorcycles = new ArrayList<>();
-    }
-
-    public Tag(Long id, String text, User user){
-        setId(id);
-        this.text = text;
-        this.user = user;
-    }
+    private Set<Motorcycle> motorcycles;
 
     public void removeCar(Car car) {
         cars.removeIf(n -> n.getId().equals(car.getId()));
