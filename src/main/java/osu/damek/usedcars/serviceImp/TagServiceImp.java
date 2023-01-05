@@ -39,7 +39,7 @@ public class TagServiceImp implements TagService {
         User currentUser = userService.getCurrentUser();
         tag.setUser(currentUser);
         currentUser.getTags().add(tag);
-        tag.setUser(tag.getUser());
+//        tag.setUser(tag.getUser());
         return tagRepository.save(tag);
     }
 

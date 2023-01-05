@@ -14,6 +14,10 @@ spring:
 
 application:
   jwt:
-    secret-key: MyVeryStrongPasswordIsLikePavelSmolkaAgaintsBzumBzumVodnikWhenTheyFightAgaintsEachOtherInTheBattleOfEpicRoutersAndSmolkaWINS
-    token-prefix: "Bearer "
-    token-expiration-after-days: 1
+    secret-key: thisBetterBeTheStrongestSecuredKeyEverOrElseImScrewed
+    token-prefix: 'Bearer '
+    token-expiration-after-ms: 1800000 #30min
+
+server:
+  port:
+    8081

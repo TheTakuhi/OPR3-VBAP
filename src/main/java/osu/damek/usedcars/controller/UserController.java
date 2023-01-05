@@ -7,18 +7,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import osu.damek.usedcars.model.Car;
-import osu.damek.usedcars.model.Motorcycle;
-import osu.damek.usedcars.model.Tag;
 import osu.damek.usedcars.model.User;
-import osu.damek.usedcars.security.PasswordConfig;
 import osu.damek.usedcars.security.jwt.JwtUtils;
 import osu.damek.usedcars.security.payload.JwtResponse;
 import osu.damek.usedcars.security.payload.LoginRequest;
 import osu.damek.usedcars.security.payload.SignupRequest;
 import osu.damek.usedcars.service.UserService;
-
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,7 +24,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private PasswordConfig passwordConfig;
+    PasswordEncoder encoder;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -36,6 +32,7 @@ public class UserController {
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Autowired
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -52,7 +49,7 @@ public class UserController {
     public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
         User user = new User(
                 signupRequest.getUsername(),
-                passwordConfig.passwordEncoder().encode(signupRequest.getPassword())
+                encoder.encode(signupRequest.getPassword())
         );
         userService.createUser(user);
         return ResponseEntity.ok().build();
