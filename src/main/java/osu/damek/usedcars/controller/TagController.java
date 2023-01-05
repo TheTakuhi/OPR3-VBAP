@@ -1,58 +1,45 @@
 package osu.damek.usedcars.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
 import osu.damek.usedcars.model.Tag;
 import osu.damek.usedcars.service.TagService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@CrossOrigin
 @RestController
-@RequestMapping("/tags")
+@RequestMapping("/api/tags/")
+@CrossOrigin
 public class TagController {
-    private final TagService tagService;
+    @Autowired
+    private TagService tagService;
 
-    public TagController(TagService tagService) {
-        this.tagService = tagService;
+    @GetMapping("all")
+    ResponseEntity<Object> getAll() {
+        return tagService.getAllTags();
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Tag>> getAllTags(){
-        List<Tag> tags = tagService.getAllTags();
-        return new ResponseEntity<>(tags, HttpStatus.OK);
+    @GetMapping("all/{userId}")
+    ResponseEntity<Object> getAllByUserId(@PathVariable("userId") Long userId) {
+        return tagService.getAllTagsByUserId(userId);
     }
 
-    @GetMapping("/tags/{userId}")
-    public ResponseEntity<List<Tag>> getAllByUserId(@PathVariable Long userId) {
-        List<Tag> tags = tagService.getAllByUserId(userId);
-        return new ResponseEntity<>(tags, HttpStatus.OK);
+    @GetMapping("get/{tagId}")
+    ResponseEntity<Object> getTagById(@PathVariable("tagId") Long tagId) {
+        return tagService.getTagById(tagId);
     }
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<Tag> getTagById(@PathVariable("id") Long id){
-        Tag tag = tagService.getTagById(id);
-        return new ResponseEntity<>(tag, HttpStatus.OK);
+    @PostMapping(value = "add/{userId}")
+    ResponseEntity<Object> addTag(@RequestBody Tag tag, @PathVariable("userId") Long userId) {
+        return tagService.addTag(tag, userId);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Tag> addTag(@RequestBody Tag tag){
-        Tag newTag = tagService.addTag(tag);
-        return new ResponseEntity<>(newTag, HttpStatus.CREATED);
+    @PutMapping(value = "edit/{tagId}")
+    ResponseEntity<Object> updateTag(@RequestBody Tag newTag, @PathVariable("tagId") Long tagId) {
+        return tagService.updateTag(newTag, tagId);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Tag> updateTag(@RequestBody Tag tag){
-        Tag updateTag = tagService.updateTag(tag);
-        return new ResponseEntity<>(updateTag, HttpStatus.OK);
-    }
-
-    @Transactional
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteTag(@PathVariable("id") Long id){
-        tagService.deleteTag(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @DeleteMapping(value = "delete/{tagId}")
+    ResponseEntity<Object> deleteTag(@PathVariable("tagId") Long tagId) {
+        return tagService.deleteTag(tagId);
     }
 }

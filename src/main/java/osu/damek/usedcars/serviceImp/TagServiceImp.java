@@ -1,64 +1,107 @@
 package osu.damek.usedcars.serviceImp;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import osu.damek.usedcars.exception.NotFoundException;
 import osu.damek.usedcars.model.Tag;
 import osu.damek.usedcars.model.User;
 import osu.damek.usedcars.repository.TagRepository;
 import osu.damek.usedcars.service.TagService;
 import osu.damek.usedcars.service.UserService;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class TagServiceImp implements TagService {
-    private final TagRepository tagRepository;
-    private final UserService userService;
-
     @Autowired
-    public TagServiceImp(TagRepository tagRepository, UserService userService) {
-        this.tagRepository = tagRepository;
-        this.userService = userService;
+    private TagRepository tagRepository;
+    
+    @Autowired
+    private UserService userService;
+
+    @Override
+    public Boolean existsByTagId(Long tagId) {
+        return tagRepository.existsById(tagId);
     }
 
-    public List<Tag> getAllTags(){
-        return tagRepository.findAll();
+    @Override
+    public Tag findTagByTagId(Long tagId) {
+        return tagRepository.findByTagId(tagId);
     }
 
-    public Tag getTagById(Long id){
-        return tagRepository.getTagById(id).orElseThrow(() -> new NotFoundException("Tag with id: " + id + " was not found"));
+    @Override
+    public ResponseEntity<Object> getAllTags() {
+        List<Tag> ret = tagRepository.findAll();
+        ret.forEach(item -> {
+            item.getUser().setTags(null);
+        });
+
+        return ResponseEntity.ok(ret);
     }
 
-    public List<Tag> getAllByUserId(Long userId) {
-        return tagRepository.getAllByUserId(userId);
+    @Override
+    public ResponseEntity<Object> getAllTagsByUserId(Long userId) {
+        if (!userService.existsByUserId(userId))
+            return ResponseEntity.notFound().build();
+
+        User user = userService.getUserById(userId);
+        List<Tag> tags = tagRepository.findAll();
+
+        List<Tag> ret = new ArrayList<>();
+        tags.forEach(item -> {
+            item.getUser().setTags(null);
+            if (item.getUser().getUserId().equals(user.getUserId()))
+                ret.add(item);
+        });
+
+        return ResponseEntity.ok(ret);
     }
 
-    public Tag addTag(Tag tag){
-        tag.setUser(tag.getUser());
-        return tagRepository.save(tag);
+    @Override
+    public ResponseEntity<Object> getTagById(Long tagId) {
+        if (!tagRepository.existsById(tagId))
+            return ResponseEntity.notFound().build();
+
+        Tag ret = tagRepository.findByTagId(tagId);
+        ret.setUser(null);
+
+        return ResponseEntity.ok(ret);
     }
 
-    public Tag updateTag(Tag tag){
-        tag.setText(tag.getText());
-        return tagRepository.save(tag);
+    @Override
+    public ResponseEntity<Object> addTag(Tag tag, Long userId) {
+        if (!userService.existsByUserId(userId))
+            return ResponseEntity.notFound().build();
+
+        User user = userService.getUserById(userId);
+        tag.setUser(user);
+        tagRepository.save(tag);
+
+        return ResponseEntity.ok().build();
     }
 
-    public void deleteTag(Long id){
-        Tag tag = getTagById(id);
-        tag.getCars().forEach(car -> car.removeTag(tag));
-        tag.getMotorcycles().forEach(motorcycle -> motorcycle.removeTag(tag));
+    @Override
+    public ResponseEntity<Object> updateTag(Tag newTag, Long tagId) {
+        if (!tagRepository.existsById(tagId))
+            return ResponseEntity.notFound().build();
+
+        Tag tag = tagRepository.findByTagId(tagId);
+        tag.update(newTag);
+        tagRepository.save(tag);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<Object> deleteTag(Long tagId) {
+        if (!tagRepository.existsById(tagId))
+            return ResponseEntity.notFound().build();
+
+        Tag tag = tagRepository.findByTagId(tagId);
+        tag.setUser(null);
         tagRepository.delete(tag);
-    }
 
-    public void deleteByUserId(Long userId) {
-        getAllByUserId(userId)
-                .forEach(tag -> deleteTag(tag.getId()));
-    }
-
-    @Transactional
-    public void removeUnused() {
-        tagRepository.removeAllUnused();
+        return ResponseEntity.ok().build();
     }
 }

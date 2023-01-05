@@ -5,8 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import osu.damek.usedcars.model.User;
 
-import java.util.List;
-
 public interface UserService extends UserDetailsService {
     UserDetails loadUserByUsername(String username);
 
@@ -14,7 +12,7 @@ public interface UserService extends UserDetailsService {
 
     User getLoggedUser();
 
-    User createUser(User user);
+    User saveUser(User user);
 
     Boolean existsByUserId(Long userId);
 

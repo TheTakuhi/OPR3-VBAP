@@ -1,9 +1,6 @@
 package osu.damek.usedcars.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,42 +9,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "user")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false, updatable = false)
+    @Column(name = "user_id")
     private Long userId;
-    @Column(nullable = false, unique = true)
     private String username;
-    @Column(nullable = false, columnDefinition = "TEXT")
     private String password;
 
-    @OneToMany(
-            mappedBy = "user",
-            orphanRemoval = true,
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE
-    )
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<Tag> tags;
-    @OneToMany(
-            mappedBy = "user",
-            orphanRemoval = true,
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE
-    )
-    private Set<Car> cars;
-    @OneToMany(
-            mappedBy = "user",
-            orphanRemoval = true,
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE
-    )
-    private Set<Motorcycle> motorcycles;
 
     public User(String username, String password) {
         this.username = username;
@@ -59,7 +36,7 @@ public class User implements UserDetails {
         this.isEnabled = true;
     }
 
-    //JWT
+    // jwt and security stuff
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;

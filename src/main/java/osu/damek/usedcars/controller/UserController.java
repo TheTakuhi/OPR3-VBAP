@@ -17,10 +17,13 @@ import osu.damek.usedcars.service.UserService;
 
 import javax.validation.Valid;
 
-@CrossOrigin
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users/")
+@CrossOrigin
 public class UserController {
+    @Autowired
+    private UserService userService;
+
     @Autowired
     PasswordEncoder encoder;
 
@@ -30,11 +33,8 @@ public class UserController {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @Autowired
-    private UserService userService;
-
-    @GetMapping("/all")
-    public ResponseEntity<Object> getAllUsers(){
+    @GetMapping("all")
+    ResponseEntity<Object> getAllUsers() {
         return userService.getAllUsers();
     }
 
@@ -48,14 +48,14 @@ public class UserController {
         if (userService.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body("User with this username already exists!");
+                    .body("Username is already taken!");
         }
 
         User user = new User(
                 signupRequest.getUsername(),
                 encoder.encode(signupRequest.getPassword())
         );
-        userService.createUser(user);
+        userService.saveUser(user);
         return ResponseEntity.ok().build();
     }
 
@@ -72,10 +72,7 @@ public class UserController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         User user = (User) authentication.getPrincipal();
-        user.setCars(null);
-        user.setMotorcycles(null);
         user.setTags(null);
-
 
         return ResponseEntity.ok(new JwtResponse(
                 jwt,

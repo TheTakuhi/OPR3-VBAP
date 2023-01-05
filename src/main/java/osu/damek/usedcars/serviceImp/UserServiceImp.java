@@ -1,5 +1,8 @@
 package osu.damek.usedcars.serviceImp;
 
+import osu.damek.usedcars.model.User;
+import osu.damek.usedcars.repository.UserRepository;
+import osu.damek.usedcars.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -7,9 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import osu.damek.usedcars.model.User;
-import osu.damek.usedcars.repository.UserRepository;
-import osu.damek.usedcars.service.UserService;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public User createUser(User user) {
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
 
@@ -54,8 +54,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public ResponseEntity<Object> getAllUsers() {
         List<User> ret = userRepository.findAll();
         ret.forEach(user -> {
-            user.setCars(null);
-            user.setMotorcycles(null);
             user.setTags(null);
             user.setPassword(null);
         });
@@ -70,8 +68,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         User ret = userRepository.findByUserId(userId);
         ret.getTags().forEach(tag -> tag.setUser(null));
-        ret.getCars().forEach(car -> car.setUser(null));
-        ret.getMotorcycles().forEach(motorcycle -> motorcycle.setUser(null));
         ret.setPassword(null);
 
         return ResponseEntity.ok(ret);

@@ -1,16 +1,22 @@
 package osu.damek.usedcars.service;
 
+import org.springframework.http.ResponseEntity;
 import osu.damek.usedcars.model.Tag;
 
-import java.util.List;
-
 public interface TagService {
-    List<Tag> getAllTags();
-    List<Tag> getAllByUserId(Long userId);
-    Tag getTagById(Long id);
-    Tag addTag(Tag tag);
-    Tag updateTag(Tag tag);
-    void deleteTag(Long id);
-    void deleteByUserId(Long userId);
-    void removeUnused();
+    Boolean existsByTagId(Long tagId);
+
+    Tag findTagByTagId(Long tagId);
+
+    ResponseEntity<Object> getAllTags();
+
+    ResponseEntity<Object> getAllTagsByUserId(Long userId);
+
+    ResponseEntity<Object> getTagById(Long tagId);
+
+    ResponseEntity<Object> addTag(Tag tag, Long userId);
+
+    ResponseEntity<Object> updateTag(Tag tag, Long tagId);
+
+    ResponseEntity<Object> deleteTag(Long tagId);
 }
