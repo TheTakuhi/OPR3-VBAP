@@ -10,87 +10,60 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "user")
-@Table(
-        name = "\"users\"",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "user_username_unique",
-                        columnNames = "username"
-                )
-        })
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, updatable = false)
-    private Long id;
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "user_id", nullable = false, updatable = false)
+    private Long userId;
+    @Column(nullable = false, unique = true)
     private String username;
-    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String password;
+
     @OneToMany(
             mappedBy = "user",
             orphanRemoval = true,
             fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE
     )
-    private List<Tag> tags;
+    private Set<Tag> tags;
     @OneToMany(
             mappedBy = "user",
             orphanRemoval = true,
             fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE
     )
-    private List<Car> cars;
+    private Set<Car> cars;
     @OneToMany(
             mappedBy = "user",
             orphanRemoval = true,
             fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE
     )
-    private List<Motorcycle> motorcycles;
-
-    @Column(
-            name = "account_non_expired",
-            nullable = false
-    )
-    private boolean isAccountNonExpired;
-
-    @Column(
-            name = "non_locked",
-            nullable = false
-    )
-    private boolean isAccountNonLocked;
-
-    @Column(
-            name = "credentials_non_expired",
-            nullable = false
-    )
-    private boolean isCredentialsNonExpired;
-
-    @Column(
-            name = "enabled",
-            nullable = false
-    )
-    private boolean isEnabled;
+    private Set<Motorcycle> motorcycles;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+
         this.isAccountNonExpired = true;
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
         this.isEnabled = true;
-        this.tags = new ArrayList<>();
-        this.cars = new ArrayList<>();
-        this.motorcycles = new ArrayList<>();
     }
+
+    //JWT
+    private boolean isAccountNonExpired;
+    private boolean isAccountNonLocked;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

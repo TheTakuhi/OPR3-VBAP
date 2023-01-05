@@ -1,11 +1,11 @@
 package osu.damek.usedcars.serviceImp;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import osu.damek.usedcars.model.User;
 import osu.damek.usedcars.repository.UserRepository;
@@ -15,45 +15,65 @@ import java.util.List;
 
 @Service
 public class UserServiceImp implements UserService, UserDetailsService {
-    private final UserRepository userRepository;
-
     @Autowired
-    public UserServiceImp(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository
-                .findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
-    }
-
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
     public User getUserById(Long userId) {
-        return userRepository.findUserById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User with id " + userId + " not found"));
+        return userRepository.findByUserId(userId);
     }
 
+    @Override
     public User getLoggedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = (String) auth.getPrincipal();
         return (User) loadUserByUsername(username);
     }
 
-    public User getCurrentUser() {
-        User user = getLoggedUser();
-        return userRepository.findUserByUsername(user.getUsername())
-                .orElseThrow(() -> {
-                    String message = String.format("Invalid user authenticated. User with username \"%s\" doesn't exists.", user.getUsername());
-                    throw new IllegalStateException(message);
-                });
+    @Override
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public Boolean existsByUserId(Long userId) {
+        return userRepository.existsByUserId(userId);
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public ResponseEntity<Object> getAllUsers() {
+        List<User> ret = userRepository.findAll();
+        ret.forEach(user -> {
+            user.setCars(null);
+            user.setMotorcycles(null);
+            user.setTags(null);
+            user.setPassword(null);
+        });
+
+        return ResponseEntity.ok(ret);
+    }
+
+    @Override
+    public ResponseEntity<Object> getUserDataByUserId(Long userId) {
+        if (!userRepository.existsById(userId))
+            return ResponseEntity.notFound().build();
+
+        User ret = userRepository.findByUserId(userId);
+        ret.getTags().forEach(tag -> tag.setUser(null));
+        ret.getCars().forEach(car -> car.setUser(null));
+        ret.getMotorcycles().forEach(motorcycle -> motorcycle.setUser(null));
+        ret.setPassword(null);
+
+        return ResponseEntity.ok(ret);
     }
 }

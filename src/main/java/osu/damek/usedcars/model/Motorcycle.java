@@ -4,8 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,7 +34,7 @@ public class Motorcycle implements Serializable {
             joinColumns = @JoinColumn(name = "id_motorcycle"),
             inverseJoinColumns = @JoinColumn(name = "id_tag")
     )
-    private List<Tag> tags;
+    private Set<Tag> tags;
     @ManyToOne
     @JoinColumn(
             name = "id_user",
@@ -45,22 +44,6 @@ public class Motorcycle implements Serializable {
             )
     )
     private User user;
-
-    public Motorcycle(String brand, String type, Double price, String imageUrl, String description, User user, List<Tag> tags) {
-        this.brand = brand;
-        this.type = type;
-        this.price = price;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.user = user;
-        this.tags = tags;
-    }
-
-    public Motorcycle(String brand, User user){
-        this.brand = brand;
-        this.user = user;
-        this.tags = new ArrayList<>();
-    }
 
     public void removeTag(Tag tag) {
         tags.remove(tag);

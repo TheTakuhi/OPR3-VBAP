@@ -1,7 +1,6 @@
 package osu.damek.usedcars.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +16,6 @@ import osu.damek.usedcars.security.payload.SignupRequest;
 import osu.damek.usedcars.service.UserService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -33,20 +31,26 @@ public class UserController {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers(){
-        List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<Object> getAllUsers(){
+        return userService.getAllUsers();
+    }
+
+    @GetMapping("get/{userId}")
+    ResponseEntity<Object> getUserDataByUserId(@PathVariable("userId") Long userId) {
+        return userService.getUserDataByUserId(userId);
     }
 
     @PostMapping("signup")
     public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
+        if (userService.existsByUsername(signupRequest.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("User with this username already exists!");
+        }
+
         User user = new User(
                 signupRequest.getUsername(),
                 encoder.encode(signupRequest.getPassword())
@@ -75,7 +79,7 @@ public class UserController {
 
         return ResponseEntity.ok(new JwtResponse(
                 jwt,
-                user.getId(),
+                user.getUserId(),
                 user.getUsername()
         ));
     }

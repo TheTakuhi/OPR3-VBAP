@@ -26,7 +26,7 @@ public class Tag {
     private Long id;
     @Column(name = "text", nullable = false)
     private String text;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(
             name = "id_user",
             foreignKey = @ForeignKey(
