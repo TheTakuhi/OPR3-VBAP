@@ -38,6 +38,7 @@ public class TagServiceImp implements TagService {
             tag.getUser().setCars(null);
             tag.getUser().setMotorcycles(null);
             tag.setCars(null);
+            tag.setMotorcycles(null);
         });
 
         return ResponseEntity.ok(ret);
@@ -56,6 +57,8 @@ public class TagServiceImp implements TagService {
             tag.getUser().setTags(null);
             tag.getUser().setCars(null);
             tag.getUser().setMotorcycles(null);
+            tag.setCars(null);
+            tag.setMotorcycles(null);
             if (tag.getUser().getUserId().equals(user.getUserId()))
                 ret.add(tag);
         });

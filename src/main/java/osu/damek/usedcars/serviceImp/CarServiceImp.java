@@ -56,6 +56,7 @@ public class CarServiceImp implements CarService {
             car.getUser().setCars(null);
             car.getUser().setTags(null);
             car.getUser().setMotorcycles(null);
+            car.setTags(null);
             if (car.getUser().getUserId().equals(user.getUserId()))
                 ret.add(car);
         });

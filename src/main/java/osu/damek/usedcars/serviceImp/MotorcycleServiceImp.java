@@ -37,6 +37,7 @@ public class MotorcycleServiceImp implements MotorcycleService {
             motorcycle.getUser().setCars(null);
             motorcycle.getUser().setTags(null);
             motorcycle.getUser().setMotorcycles(null);
+            motorcycle.setTags(null);
         });
 
         return ResponseEntity.ok(ret);
@@ -55,6 +56,7 @@ public class MotorcycleServiceImp implements MotorcycleService {
             motorcycle.getUser().setCars(null);
             motorcycle.getUser().setTags(null);
             motorcycle.getUser().setMotorcycles(null);
+            motorcycle.setTags(null);
             if (motorcycle.getUser().getUserId().equals(user.getUserId()))
                 ret.add(motorcycle);
         });

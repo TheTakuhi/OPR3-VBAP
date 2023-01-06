@@ -26,6 +26,11 @@ public class Tag {
     )
     private Set<Car> cars;
 
+    @ManyToMany(
+            mappedBy = "tags"
+    )
+    private Set<Motorcycle> motorcycles;
+
     private String text;
 
     public Tag(Long tagId, String text){
