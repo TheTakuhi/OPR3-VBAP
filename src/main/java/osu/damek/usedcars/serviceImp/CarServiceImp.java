@@ -36,6 +36,7 @@ public class CarServiceImp implements CarService {
         ret.forEach(car -> {
             car.getUser().setCars(null);
             car.getUser().setTags(null);
+            car.getUser().setMotorcycles(null);
         });
 
         return ResponseEntity.ok(ret);
@@ -53,6 +54,7 @@ public class CarServiceImp implements CarService {
         cars.forEach(car -> {
             car.getUser().setCars(null);
             car.getUser().setTags(null);
+            car.getUser().setMotorcycles(null);
             if (car.getUser().getUserId().equals(user.getUserId()))
                 ret.add(car);
         });

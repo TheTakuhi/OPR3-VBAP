@@ -10,10 +10,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Car {
+public class Motorcycle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long carId;
+    private Long motorcycleId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
@@ -21,20 +21,20 @@ public class Car {
 
     private String brand;
 
-    public Car(Long carId, String text){
-        this.carId = carId;
+    public Motorcycle(Long motorcycleId, String text){
+        this.motorcycleId = motorcycleId;
         this.brand = text;
     }
 
-    public boolean isCarEmpty(Car car) {
-        return car.getBrand() == null || car.getBrand().equals("");
+    public boolean isMotorcycleEmpty(Motorcycle motorcycle) {
+        return motorcycle.getBrand() == null || motorcycle.getBrand().equals("");
     }
 
     public User getUser() {
         return user;
     }
 
-    public void update(Car newCar) {
-        setBrand(newCar.getBrand());
+    public void update(Motorcycle newMotorcycle) {
+        setBrand(newMotorcycle.getBrand());
     }
 }

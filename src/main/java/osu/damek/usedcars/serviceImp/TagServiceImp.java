@@ -36,6 +36,7 @@ public class TagServiceImp implements TagService {
         ret.forEach(tag -> {
             tag.getUser().setTags(null);
             tag.getUser().setCars(null);
+            tag.getUser().setMotorcycles(null);
         });
 
         return ResponseEntity.ok(ret);
@@ -53,6 +54,7 @@ public class TagServiceImp implements TagService {
         tags.forEach(tag -> {
             tag.getUser().setTags(null);
             tag.getUser().setCars(null);
+            tag.getUser().setMotorcycles(null);
             if (tag.getUser().getUserId().equals(user.getUserId()))
                 ret.add(tag);
         });

@@ -26,7 +26,7 @@ public class Tag {
         this.text = text;
     }
 
-    public boolean isItemEmpty(Tag tag) {
+    public boolean isTagEmpty(Tag tag) {
         return tag.getText() == null || tag.getText().equals("");
     }
 
