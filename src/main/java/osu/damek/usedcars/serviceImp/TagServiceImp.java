@@ -33,8 +33,9 @@ public class TagServiceImp implements TagService {
     @Override
     public ResponseEntity<Object> getAllTags() {
         List<Tag> ret = tagRepository.findAll();
-        ret.forEach(item -> {
-            item.getUser().setTags(null);
+        ret.forEach(tag -> {
+            tag.getUser().setTags(null);
+            tag.getUser().setCars(null);
         });
 
         return ResponseEntity.ok(ret);
@@ -49,10 +50,11 @@ public class TagServiceImp implements TagService {
         List<Tag> tags = tagRepository.findAll();
 
         List<Tag> ret = new ArrayList<>();
-        tags.forEach(item -> {
-            item.getUser().setTags(null);
-            if (item.getUser().getUserId().equals(user.getUserId()))
-                ret.add(item);
+        tags.forEach(tag -> {
+            tag.getUser().setTags(null);
+            tag.getUser().setCars(null);
+            if (tag.getUser().getUserId().equals(user.getUserId()))
+                ret.add(tag);
         });
 
         return ResponseEntity.ok(ret);

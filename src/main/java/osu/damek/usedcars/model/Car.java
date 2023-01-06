@@ -10,31 +10,31 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Tag {
+public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tagId;
+    private Long carId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private String text;
+    private String brand;
 
-    public Tag(Long tagId, String text){
-        this.tagId = tagId;
-        this.text = text;
+    public Car(Long carId, String text){
+        this.carId = carId;
+        this.brand = text;
     }
 
-    public boolean isItemEmpty(Tag tag) {
-        return tag.getText() == null || tag.getText().equals("");
+    public boolean isItemEmpty(Car car) {
+        return car.getBrand() == null || car.getBrand().equals("");
     }
 
     public User getUser() {
         return user;
     }
 
-    public void update(Tag newTag) {
-        setText((newTag.getText()));
+    public void update(Car newCar) {
+        setBrand(newCar.getBrand());
     }
 }
