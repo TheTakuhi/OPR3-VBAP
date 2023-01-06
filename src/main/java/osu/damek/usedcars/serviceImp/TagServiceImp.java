@@ -37,6 +37,7 @@ public class TagServiceImp implements TagService {
             tag.getUser().setTags(null);
             tag.getUser().setCars(null);
             tag.getUser().setMotorcycles(null);
+            tag.setCars(null);
         });
 
         return ResponseEntity.ok(ret);

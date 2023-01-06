@@ -55,6 +55,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
         List<User> ret = userRepository.findAll();
         ret.forEach(user -> {
             user.setTags(null);
+            user.setCars(null);
+            user.setMotorcycles(null);
             user.setPassword(null);
         });
 
@@ -68,6 +70,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         User ret = userRepository.findByUserId(userId);
         ret.getTags().forEach(tag -> tag.setUser(null));
+        ret.getCars().forEach(car -> car.setUser(null));
+        ret.getMotorcycles().forEach(motorcycle -> motorcycle.setUser(null));
         ret.setPassword(null);
 
         return ResponseEntity.ok(ret);
