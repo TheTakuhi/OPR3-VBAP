@@ -33,15 +33,6 @@ public class Tag {
 
     private String text;
 
-    public Tag(Long tagId, String text){
-        this.tagId = tagId;
-        this.text = text;
-    }
-
-    public boolean isTagEmpty(Tag tag) {
-        return tag.getText() == null || tag.getText().equals("");
-    }
-
     public User getUser() {
         return user;
     }

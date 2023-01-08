@@ -30,15 +30,18 @@ public class Car {
     private Set<Tag> tags;
 
     private String brand;
+    private String type;
+    private Double price;
+    private String imageUrl;
+    private String description;
 
-    public Car(Long carId, String text){
-        this.carId = carId;
-        this.brand = text;
-    }
-
-    public boolean isCarEmpty(Car car) {
-        return car.getBrand() == null || car.getBrand().equals("");
-    }
+    private String bodywork;
+    private Double yearOfManufacture;
+    private Double tachometer;
+    private Double performance;
+    private Double consumption;
+    private Double capacity;
+    private EFuel fuel;
 
     public User getUser() {
         return user;
@@ -46,5 +49,16 @@ public class Car {
 
     public void update(Car newCar) {
         setBrand(newCar.getBrand());
+        setType(newCar.getType());
+        setPrice(newCar.getPrice());
+        setImageUrl(newCar.getImageUrl());
+        setDescription(newCar.getDescription());
+        setBodywork(newCar.getBodywork());
+        setYearOfManufacture(newCar.getYearOfManufacture());
+        setTachometer(newCar.getTachometer());
+        setPerformance(newCar.getPerformance());
+        setConsumption(newCar.getConsumption());
+        setCapacity(newCar.getCapacity());
+        setFuel(newCar.getFuel());
     }
 }

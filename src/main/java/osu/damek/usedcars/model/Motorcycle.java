@@ -30,15 +30,16 @@ public class Motorcycle {
     private Set<Tag> tags;
 
     private String brand;
+    private String type;
+    private Double price;
+    private String imageUrl;
+    private String description;
 
-    public Motorcycle(Long motorcycleId, String text){
-        this.motorcycleId = motorcycleId;
-        this.brand = text;
-    }
-
-    public boolean isMotorcycleEmpty(Motorcycle motorcycle) {
-        return motorcycle.getBrand() == null || motorcycle.getBrand().equals("");
-    }
+    private Double yearOfManufacture;
+    private Double tachometer;
+    private Double performance;
+    private Double consumption;
+    private EFuel fuel;
 
     public User getUser() {
         return user;
@@ -46,5 +47,14 @@ public class Motorcycle {
 
     public void update(Motorcycle newMotorcycle) {
         setBrand(newMotorcycle.getBrand());
+        setType(newMotorcycle.getType());
+        setPrice(newMotorcycle.getPrice());
+        setImageUrl(newMotorcycle.getImageUrl());
+        setDescription(newMotorcycle.getDescription());
+        setYearOfManufacture(newMotorcycle.getYearOfManufacture());
+        setTachometer(newMotorcycle.getTachometer());
+        setPerformance(newMotorcycle.getPerformance());
+        setConsumption(newMotorcycle.getConsumption());
+        setFuel(newMotorcycle.getFuel());
     }
 }
