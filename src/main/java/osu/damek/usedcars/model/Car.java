@@ -21,7 +21,7 @@ public class Car {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name = "tag_car",
             joinColumns = @JoinColumn(name = "car_id"),

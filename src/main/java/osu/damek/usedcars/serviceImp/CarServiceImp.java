@@ -4,13 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import osu.damek.usedcars.model.Car;
+import osu.damek.usedcars.model.Tag;
 import osu.damek.usedcars.model.User;
 import osu.damek.usedcars.repository.CarRepository;
 import osu.damek.usedcars.service.CarService;
+import osu.damek.usedcars.service.TagService;
 import osu.damek.usedcars.service.UserService;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CarServiceImp implements CarService {
@@ -19,6 +25,9 @@ public class CarServiceImp implements CarService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TagService tagService;
 
     @Override
     public Boolean existsByCarId(Long carId) {
@@ -44,24 +53,18 @@ public class CarServiceImp implements CarService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Object> getAllCarsByUserId(Long userId) {
         if (!userService.existsByUserId(userId))
             return ResponseEntity.notFound().build();
 
-        User user = userService.getUserById(userId);
-        List<Car> cars = carRepository.findAll();
-
-        List<Car> ret = new ArrayList<>();
-        cars.forEach(car -> {
-            car.getUser().setCars(null);
-            car.getUser().setTags(null);
-            car.getUser().setMotorcycles(null);
-            car.setTags(null);
-            if (car.getUser().getUserId().equals(user.getUserId()))
-                ret.add(car);
-        });
-
-        return ResponseEntity.ok(ret);
+        List<Car> cars = carRepository.findAllByUserUserId(userId)
+                .stream()
+                .map(car -> {
+                    car.setTags(car.getTags());
+                    return car;
+                }).collect(Collectors.toList());
+        return ResponseEntity.ok(cars);
     }
 
     @Override
@@ -81,7 +84,17 @@ public class CarServiceImp implements CarService {
             return ResponseEntity.notFound().build();
 
         User user = userService.getUserById(userId);
+
+        Set<Tag> foundTags = new HashSet<>();
+        for (Tag tag : car.getTags()) {
+            System.out.println(tag.toString());
+            tagService.getTagById(tag.getTagId());
+            foundTags.add(tag);
+        }
+
+        car.setTags(foundTags);
         car.setUser(user);
+
         carRepository.save(car);
 
         return ResponseEntity.ok().build();

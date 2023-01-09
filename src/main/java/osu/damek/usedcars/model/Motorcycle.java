@@ -23,7 +23,7 @@ public class Motorcycle {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "tag_car",
+            name = "tag_motorcycle",
             joinColumns = @JoinColumn(name = "motorcycle_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )

@@ -7,4 +7,5 @@ import osu.damek.usedcars.model.Tag;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
     Tag findByTagId(Long tagId);
+
 }
