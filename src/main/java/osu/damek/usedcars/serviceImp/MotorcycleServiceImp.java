@@ -4,13 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import osu.damek.usedcars.model.Motorcycle;
+import osu.damek.usedcars.model.Tag;
 import osu.damek.usedcars.model.User;
 import osu.damek.usedcars.repository.MotorcycleRepository;
 import osu.damek.usedcars.service.MotorcycleService;
+import osu.damek.usedcars.service.TagService;
 import osu.damek.usedcars.service.UserService;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MotorcycleServiceImp implements MotorcycleService {
@@ -19,6 +24,9 @@ public class MotorcycleServiceImp implements MotorcycleService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TagService tagService;
 
     @Override
     public Boolean existsByMotorcycleId(Long motorcycleId) {
@@ -44,24 +52,18 @@ public class MotorcycleServiceImp implements MotorcycleService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Object> getAllMotorcyclesByUserId(Long userId) {
         if (!userService.existsByUserId(userId))
             return ResponseEntity.notFound().build();
 
-        User user = userService.getUserById(userId);
-        List<Motorcycle> motorcycles = motorcycleRepository.findAll();
-
-        List<Motorcycle> ret = new ArrayList<>();
-        motorcycles.forEach(motorcycle -> {
-            motorcycle.getUser().setCars(null);
-            motorcycle.getUser().setTags(null);
-            motorcycle.getUser().setMotorcycles(null);
-            motorcycle.setTags(null);
-            if (motorcycle.getUser().getUserId().equals(user.getUserId()))
-                ret.add(motorcycle);
-        });
-
-        return ResponseEntity.ok(ret);
+        List<Motorcycle> motorcycles = motorcycleRepository.findAllByUserUserId(userId)
+                .stream()
+                .map(motorcycle -> {
+                    motorcycle.setTags(motorcycle.getTags());
+                    return motorcycle;
+                }).collect(Collectors.toList());
+        return ResponseEntity.ok(motorcycles);
     }
 
     @Override
@@ -81,7 +83,17 @@ public class MotorcycleServiceImp implements MotorcycleService {
             return ResponseEntity.notFound().build();
 
         User user = userService.getUserById(userId);
+
+        Set<Tag> foundTags = new HashSet<>();
+        for (Tag tag : motorcycle.getTags()) {
+            System.out.println(tag.toString());
+            tagService.getTagById(tag.getTagId());
+            foundTags.add(tag);
+        }
+
+        motorcycle.setTags(foundTags);
         motorcycle.setUser(user);
+
         motorcycleRepository.save(motorcycle);
 
         return ResponseEntity.ok().build();

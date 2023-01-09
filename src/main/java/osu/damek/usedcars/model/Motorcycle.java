@@ -21,7 +21,7 @@ public class Motorcycle {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tag_motorcycle",
             joinColumns = @JoinColumn(name = "motorcycle_id"),
@@ -56,5 +56,6 @@ public class Motorcycle {
         setPerformance(newMotorcycle.getPerformance());
         setConsumption(newMotorcycle.getConsumption());
         setFuel(newMotorcycle.getFuel());
+        setTags(newMotorcycle.getTags());
     }
 }

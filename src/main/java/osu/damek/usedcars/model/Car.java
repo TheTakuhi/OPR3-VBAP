@@ -60,5 +60,6 @@ public class Car {
         setConsumption(newCar.getConsumption());
         setCapacity(newCar.getCapacity());
         setFuel(newCar.getFuel());
+        setTags(newCar.getTags());
     }
 }
